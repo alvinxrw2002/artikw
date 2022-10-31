@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block meta %}
+<title>Registrasi Akun</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
+{% endblock meta %}
+
+{% block content %}
+
+
+<section class="background-radial-gradient overflow-hidden">
+
+    <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+        <div class="row d-flex justify-content-center align-items-center">
+
+            <div class="col-lg-8 position-relative">
+                <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+                <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+
+                <div class="card bg-glass" style="border-radius: 30px">
+                    <h1 class="text-center">Register your account here!</h1>
+                    <div class="card-body px-4 py-5 px-md-5 text-center">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <!-- Username input -->
+                            <div class="form-outline mb-4">
+                                <input type="text" name="username" maxlength="150" autocapitalize="none"
+                                    autocomplete="username" autofocus="" required="" id="id_username" size="50">
+                                <br>
+                                <label class="form-label" for="form3Example3">Username</label>
+                            </div>
+
+                            <!-- Password input -->
+                            <div class="form-outline mb-4">
+                                <input type="password" name="password1" autocomplete="new-password" required=""
+                                    id="id_password1" size="50">
+                                <br>
+                                <label class="form-label" for="form3Example4">Password</label>
+                            </div>
+
+                            <!-- Password confirmation input -->
+                            <div class="form-outline mb-4">
+                                <input type="password" name="password2" autocomplete="new-password" required=""
+                                    id="id_password2" size="50">
+                                <br>
+                                <label class="form-label" for="form3Example4">Confirm password</label>
+                            </div>
+
+                            <!-- Category preference input -->
+                            <div class="form-outline mb-4">
+                                <select name="kategori" width="50px">
+                                    <option value="abstract">abstract</option>
+                                    <option value="cartoon">cartoon</option>
+                                    <option value="collage">collage</option>
+                                    <option value="doodle">doodle</option>
+                                    <option value="drawing">drawing</option>
+                                    <option value="hologram">hologram</option>
+                                    <option value="life drawing">life drawing</option>
+                                    <option value="scribbles">scribbles</option>
+                                    <option value="silhoutte">silhoutte</option>
+                                    <option value="sketch">sketch</option>
+                                </select>
+                                <br>
+                                <label class="form-label" for="form3Example4">Select your category preference</label>
+                            </div>
+
+                            {% if form.errors %}
+                            {% for field in form %}
+                            {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            {% endfor %}
+                            {% endif %}
+
+                            <div class="d-grid gap-2 col-6 mx-auto">
+                                <button type="submit" class="btn btn-outline-warning btn-block mb-4">
+                                    Register
+                                </button>
+                            </div>
+
+                            <div>Already have an acccount? <a href="{% url 'arti:login' %}">Sign in</a></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
