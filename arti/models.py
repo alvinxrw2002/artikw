@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Karya(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     gambar = models.ImageField(upload_to="images/")
     judul = models.CharField(max_length=255)
     kategori = models.CharField(max_length=255)
@@ -15,4 +15,3 @@ class Karya(models.Model):
 class UserArti(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     kategori_favorit = models.CharField(max_length=255)
-    

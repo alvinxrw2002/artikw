@@ -4,17 +4,20 @@ from profileuser.models import *
 from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.core import serializers
 from django.template import loader
 from django.urls import reverse
 from profileuser.forms import UserImageForm
+from django.contrib.auth.decorators import login_required
 from arti.models import *  
 
 # Create your views here.
 
+@login_required(login_url='/login')
 def show_profile(request):
     profile = Profile.objects.last()
     profileimg = UploadImage.objects.last()
-    profileimg2 = Karya.objects.all()
+    profileimg2 = Karya.objects.filter(user=request.user)
 
     template = loader.get_template('profile.html')
 
@@ -27,9 +30,9 @@ def show_profile(request):
     return HttpResponse(template.render(context, request))
 
 def add(request):
-    profileValue = Profile.objects.last()
-    profileimg = UploadImage.objects.last()
-    profileimg2 = Karya.objects.all()
+    profile = Profile.objects.filter(user=request.user).last()
+    profileimg = UploadImage.objects.filter(user=request.user).last()
+    profileimg2 = Karya.objects.filter(user=request.user)
     template = loader.get_template('add.html')
 
     context = {
@@ -56,6 +59,7 @@ def show_edit_profile(request):
     profile1.save()
     return HttpResponseRedirect(reverse('profileuser:show_profile'))
 
+@login_required(login_url='/login')
 def image_request(request):  
     if request.method == 'POST':  
         form = UserImageForm(request.POST, request.FILES)  
@@ -70,6 +74,25 @@ def image_request(request):
         form = UserImageForm()  
   
     return render(request, 'edit_profile.html', {'form': form})  
+
+# def get_json(request):
+#     dataprofile = Profile.objects.last()
+#     return HttpResponse(serializers.serialize("json", dataprofile), content_type="application/json")
+
+@login_required(login_url='/login')
+def show_ajax_profile(request):
+    profile = Profile.objects.last()
+    profileimg = UploadImage.objects.last()
+    profileimg2 = Karya.objects.filter(user=request.user)
+    template = loader.get_template('edit_ajax_profile.html')
+
+    context = {
+        'changes' : profile,
+        'img' : profileimg,
+        'img2' : profileimg2,
+    }
+    return HttpResponse(template.render(context, request))
+
 
 
 
